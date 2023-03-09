@@ -57,7 +57,7 @@ main() {
 
   testWidgets('list rendering...', (tester) async {
     when(() => mockPokemonRepository.getAll(page: any(named: 'page'), size: any(named: 'size'))).thenAnswer((invocation) async => mockPokemons);
-    // when(() => mockLocalStorageService.get(any())).thenAnswer((invocation) async => jsonEncode(mockFavorites));
+    when(() => mockLocalStorageService.get(any())).thenAnswer((invocation) async => jsonEncode(mockFavorites));
 
     await tester.pumpWidget(const MaterialApp(
       home: PokemonsListPage(),
