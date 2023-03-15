@@ -35,6 +35,7 @@ dependencies:
   flutter_modular: ^5.0.3
   dio: ^5.0.1
   hive: ^2.2.3
+  hive_flutter: ^1.1.0
   path_provider: ^2.0.13
 
 dev_dependencies:
