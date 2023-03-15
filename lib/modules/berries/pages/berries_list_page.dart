@@ -23,6 +23,7 @@ class _BerriesListPageState extends State<BerriesListPage> {
   int size = 20;
   bool isLoading = false;
   bool hasMorePages = true;
+  bool isFavouritesOnly = false;
 
   @override
   void initState() {
@@ -65,10 +66,43 @@ class _BerriesListPageState extends State<BerriesListPage> {
     setState(() {});
   }
 
+  void _showFavourites() async {
+    isFavouritesOnly = !isFavouritesOnly;
+    if (isFavouritesOnly) {
+      berries.removeWhere(
+        (berry) => !favorites.contains(berry.id),
+      );
+      hasMorePages = false;
+    } else {
+      berries.clear();
+      page = 0;
+      _loadNextPage();
+    }
+
+    setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(title: const Text('Berries List')),
+        appBar: AppBar(
+          title: const Text('Berries List'),
+          actions: [
+            IconButton(
+              icon: isFavouritesOnly
+                  ? const Icon(
+                      Icons.favorite,
+                      color: Colors.orange,
+                    )
+                  : const Icon(
+                      Icons.favorite,
+                      color: Colors.grey,
+                    ),
+              tooltip: 'Filter berries',
+              onPressed: _showFavourites,
+            ),
+          ],
+        ),
         body: SafeArea(
           child: Builder(builder: (context) {
             if (isLoading && berries.isEmpty) {
@@ -80,7 +114,7 @@ class _BerriesListPageState extends State<BerriesListPage> {
             return ListView.builder(
               itemCount: berries.length + (hasMorePages ? 1 : 0),
               itemBuilder: (_, index) {
-                if (index >= berries.length) {
+                if (!isFavouritesOnly && index >= berries.length) {
                   _loadNextPage();
                   return const SizedBox(
                     height: 50,
