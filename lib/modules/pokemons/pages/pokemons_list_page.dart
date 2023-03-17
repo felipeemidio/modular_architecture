@@ -23,6 +23,7 @@ class _PokemonsListPageState extends State<PokemonsListPage> {
   int size = 20;
   bool isLoading = false;
   bool hasMorePages = true;
+  bool isFavouritesOnly = false;
 
   @override
   void initState() {
@@ -65,10 +66,43 @@ class _PokemonsListPageState extends State<PokemonsListPage> {
     setState(() {});
   }
 
+  void _showFavourites() async {
+    isFavouritesOnly = !isFavouritesOnly;
+    if (isFavouritesOnly) {
+      pokemons.removeWhere(
+        (pokemon) => !favorites.contains(pokemon.name),
+      );
+      hasMorePages = false;
+    } else {
+      pokemons.clear();
+      page = 0;
+      _loadNextPage();
+    }
+
+    setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(title: const Text('Pokemons List')),
+        appBar: AppBar(
+          title: const Text('Pokemons List'),
+          actions: [
+            IconButton(
+              icon: isFavouritesOnly
+                  ? const Icon(
+                      Icons.favorite,
+                      color: Colors.orange,
+                    )
+                  : const Icon(
+                      Icons.favorite,
+                      color: Colors.grey,
+                    ),
+              tooltip: 'Filter favourites',
+              onPressed: _showFavourites,
+            ),
+          ],
+        ),
         body: SafeArea(
           child: Builder(builder: (context) {
             if (isLoading && pokemons.isEmpty) {
@@ -80,7 +114,7 @@ class _PokemonsListPageState extends State<PokemonsListPage> {
             return ListView.builder(
               itemCount: pokemons.length + (hasMorePages ? 1 : 0),
               itemBuilder: (_, index) {
-                if (index >= pokemons.length) {
+                if (!isFavouritesOnly && index >= pokemons.length) {
                   _loadNextPage();
                   return const SizedBox(
                     height: 50,
