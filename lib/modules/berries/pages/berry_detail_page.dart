@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:modular_arch/models/berry.dart';
-import 'package:modular_arch/models/pokemon.dart';
 
 class BerryDetailPage extends StatelessWidget {
   final Berry berry;
@@ -21,11 +20,20 @@ class BerryDetailPage extends StatelessWidget {
                 Card(
                   elevation: 3,
                   margin: const EdgeInsets.symmetric(vertical: 20),
-                  child: Image.network(berry.spriteUrl, scale: 0.5, width: 200, height: 200,),
+                  child: Image.network(
+                    berry.spriteUrl,
+                    scale: 0.5,
+                    width: 200,
+                    height: 200,
+                  ),
                 ),
-                Text('${berry.name.toUpperCase()} (#${berry.id})', style: Theme.of(context).textTheme.headline4,),
+                Text(
+                  '${berry.name.toUpperCase()} (#${berry.id})',
+                  style: Theme.of(context).textTheme.headline4,
+                ),
                 const SizedBox(height: 16),
-                Text(berry.effect, style: Theme.of(context).textTheme.headline6),
+                Text(berry.effect,
+                    style: Theme.of(context).textTheme.headline6),
               ],
             ),
           ),

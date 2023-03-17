@@ -1,10 +1,8 @@
-import 'package:hive/hive.dart';
-import 'package:path_provider/path_provider.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 
 class LocalStorageService {
   static Future<void> initialize() async {
-    final directory = await getApplicationDocumentsDirectory();
-    Hive.init(directory.path);
+    Hive.initFlutter();
   }
 
   Future<String?> get(String key) async {
